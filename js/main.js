@@ -1,30 +1,23 @@
-const getRandomNumber = (min, max) => {
+const getRandomInteger = (min, max) => {
   if (min < 0 || max < 0) {
-    return new Error('Отрицательные значения запрещены');
-  } else if (min > max) {
-    return new Error('Значение "до" меньшее, чем значение "от"');
-  } else if (min === max) {
-    return min;
+    return -1;
+  } if (min > max) {
+    [min, max] = [max, min];
   }
 
-  min = Math.ceil(min);
-  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const getRandomFloatNumber = (x, y, numberOfSings = 1) => {
-  if (x < 0 || y < 0) {
-    return new Error('Отрицательные значения запрещены');
-  } else if (x > y) {
-    return new Error('Значение "до" меньшее, чем значение "от"');
-  } else if (x === y) {
-    return x;
+const getRandomFloat = (min, max, digit) => {
+  if (min < 0 || max < 0) {
+    return -1;
+  } if (min > max) {
+    [min, max] = [max, min];
   }
 
-  const random = Math.random() * (y - x + 1) + x;
-  return random.toFixed(numberOfSings);
+  return (Math.floor(Math.random() * (max - min + min)) + min).toFixed(digit);
 };
 
 
-getRandomNumber(5, 48);
-getRandomFloatNumber(2, 35, 8);
+getRandomInteger(5, 48);
+getRandomFloat(2.1, 35.2, 8);
