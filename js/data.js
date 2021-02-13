@@ -1,6 +1,6 @@
 import { getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray } from './util.js';
 
-const OFFERS_COUNT = 10;
+const OFFER_COUNT = 10;
 
 const AVATAR = {
   MIN: 1,
@@ -39,7 +39,7 @@ const LOCATION_Y = {
 
 const NUMBER_OF_SINGS = 5;
 
-const TITLE = [
+const TITLES = [
   'Отель в Токио',
   'Отель в Киото',
   'Отель в Хиросиме',
@@ -47,7 +47,7 @@ const TITLE = [
   'Отель в Саппоро',
 ];
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
@@ -75,7 +75,7 @@ const FEATURES = [
   'conditioner',
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Номер повышенной комфортности',
   'Стандартный однокомнатнный номер',
   'Однокомнатный номер категории студия c мини-кухней',
@@ -88,23 +88,23 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
-const createOffers = () => {
+const createOffer = () => {
   return {
     author: {
       avatar: 'img/avatars/user0' + getRandomInteger(AVATAR.MIN, AVATAR.MAX) + '.png',
     },
 
     offer: {
-      title: getRandomArrayElement(TITLE),
+      title: getRandomArrayElement(TITLES),
       address: getRandomInteger(ADDRESS.MIN, ADDRESS.MAX) + ', ' + getRandomInteger(ADDRESS.MIN, ADDRESS.MAX),
       price: getRandomInteger(PRICE.MIN, PRICE.MAX),
-      type: getRandomArrayElement(TYPE),
+      type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(ROOMS.MIN, ROOMS.MAX),
       guests: getRandomInteger(GUESTS.MIN, GUESTS.MAX),
       checkin: getRandomArrayElement(CHECKIN),
       checkout: getRandomArrayElement(CHECKOUT),
       features: shuffleArray(FEATURES).slice(0, getRandomInteger(1, FEATURES.length)),
-      description: getRandomArrayElement(DESCRIPTION),
+      description: getRandomArrayElement(DESCRIPTIONS),
       photos: getRandomArrayElement(PHOTOS),
     },
 
@@ -115,6 +115,6 @@ const createOffers = () => {
   }
 }
 
-const similarOffers = new Array(OFFERS_COUNT).fill(null).map(() => createOffers());
+const createOffers = () =>  new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-similarOffers();
+export {createOffers};
