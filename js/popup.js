@@ -23,13 +23,14 @@ similarCards.forEach(({ author, offer }) => {
         return 'Дворец';
     }
   };
-  let declRoom = ' комнатa для '
-  if (offer.rooms > 1) { declRoom = ' комнаты для ' }
-  if (offer.rooms > 4) { declRoom = ' комнат для ' }
-  let declGuest = ' гостя '
-  if (offer.guests > 1) { declGuest = ' гостей ' }
+  // Для склонения слова "комната" наверно потом будет функция
+  let declensionOfRoom = ' комнатa для '
+  if (offer.rooms > 1) { declensionOfRoom = ' комнаты для ' }
+  if (offer.rooms > 4) { declensionOfRoom = ' комнат для ' }
+  let declensionOfGuest = ' гостя '
+  if (offer.guests > 1) { declensionOfGuest = ' гостей ' }
   cardElement.querySelector('.popup__type').textContent = getTypeHause(offer.type);
-  cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms}` + declRoom + `${offer.guests}` + declGuest;
+  cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms}` + declensionOfRoom + `${offer.guests}` + declensionOfGuest;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   const featureList = cardElement.querySelector('.popup__features');
   featureList.innerHTML = '';
