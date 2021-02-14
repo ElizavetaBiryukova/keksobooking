@@ -1,6 +1,6 @@
-import { getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray } from './util.js';
+import { getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray} from './util.js';
 
-const OFFER_COUNT = 10;
+const OFFER_COUNT = 1;
 
 const AVATAR = {
   MIN: 1,
@@ -105,7 +105,7 @@ const createOffer = () => {
       checkout: getRandomArrayElement(CHECKOUT),
       features: shuffleArray(FEATURES).slice(0, getRandomInteger(1, FEATURES.length)),
       description: getRandomArrayElement(DESCRIPTIONS),
-      photos: getRandomArrayElement(PHOTOS),
+      photos: shuffleArray(PHOTOS).slice(0, getRandomInteger(1, PHOTOS.length)),
     },
 
     location: {

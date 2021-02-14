@@ -30,17 +30,4 @@ const shuffleArray = (a) => {
   return a;
 };
 
-const getTypeHause = (type) => {
-  switch (type) {
-    case 'flat':
-      return 'Квартира';
-    case 'bungalow':
-      return 'Бунгало';
-    case 'house':
-      return 'Дом';
-    case 'palace':
-      return 'Дворец';
-  }
-}
-
-export {getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray, getTypeHause};
+export {getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray};
