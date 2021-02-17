@@ -1,6 +1,6 @@
-import { getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray} from './util.js';
+import { getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray } from './util.js';
 
-const OFFER_COUNT = 1;
+const OFFER_COUNT = 10;
 
 const AVATAR = {
   MIN: 1,
@@ -38,6 +38,13 @@ const LOCATION_Y = {
 };
 
 const NUMBER_OF_SINGS = 5;
+
+const TYPE_HOUSE = {
+  flat: { ru: 'Квартира' },
+  bungalow: { ru: 'Бунгало' },
+  house: { ru: 'Дом' },
+  palace: { ru: 'Дворец'},
+};
 
 const TITLES = [
   'Отель в Токио',
@@ -115,6 +122,6 @@ const createOffer = () => {
   }
 }
 
-const createOffers = () =>  new Array(OFFER_COUNT).fill(null).map(() => createOffer());
+const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export {createOffers};
+export { createOffers, TYPE_HOUSE };
