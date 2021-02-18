@@ -34,3 +34,4 @@ const similarCard = ({ author: { avatar }, offer: { title, address, price, type,
 
 similarCard(createOffers()[0]);
 
+export { similarCard }

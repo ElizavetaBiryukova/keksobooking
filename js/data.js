@@ -43,7 +43,7 @@ const TYPE_HOUSE = {
   flat: { ru: 'Квартира' },
   bungalow: { ru: 'Бунгало' },
   house: { ru: 'Дом' },
-  palace: { ru: 'Дворец'},
+  palace: { ru: 'Дворец' },
 };
 
 const TITLES = [
@@ -124,4 +124,13 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export { createOffers, TYPE_HOUSE };
+//Создает массив из карточек
+const createCards = (quantity) => {
+  let cardsList = [];
+  for (let i = 0; i < quantity; i++) {
+    cardsList.push(createOffer());
+  }
+  return cardsList;
+}
+
+export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, createCards, OFFER_COUNT };
