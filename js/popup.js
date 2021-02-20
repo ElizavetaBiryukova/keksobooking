@@ -1,6 +1,6 @@
-import { createOffers, TYPE_HOUSE } from './data.js';
+import { TYPE_HOUSE } from './data.js';
 
-const mapCanvas = document.querySelector('#map-canvas'); //Блок для вставки похожих элементов
+// const mapCanvas = document.querySelector('#map-canvas'); //Блок для вставки похожих элементов
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup'); //Находит шаблон для копировнаия
 
 //Отрисовка шаблона с данными
@@ -29,9 +29,10 @@ const similarCard = ({ author: { avatar }, offer: { title, address, price, type,
     photoList.appendChild(photoElement);
   }
   cardElement.querySelector('.popup__avatar').src = avatar;
-  mapCanvas.appendChild(cardElement);
+  return cardElement;
+  // mapCanvas.appendChild(cardElement);
 };
 
-similarCard(createOffers()[0]);
+// similarCard(createOffers()[0]);
 
 export { similarCard }

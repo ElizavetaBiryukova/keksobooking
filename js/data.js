@@ -7,11 +7,6 @@ const AVATAR = {
   MAX: 8,
 };
 
-const ADDRESS = {
-  MIN: 1,
-  MAX: 600,
-};
-
 const PRICE = {
   MIN: 1200,
   MAX: 1000000,
@@ -95,6 +90,12 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
+const tokyoLat = 35.62605;
+const tokyoLng = 139.77081;
+const markerWidth = 52;
+const markerHeight = 52;
+const mapScale = 10;
+
 const createOffer = () => {
   return {
     author: {
@@ -103,7 +104,7 @@ const createOffer = () => {
 
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: getRandomInteger(ADDRESS.MIN, ADDRESS.MAX) + ', ' + getRandomInteger(ADDRESS.MIN, ADDRESS.MAX),
+      address: getRandomInteger(LOCATION_X.MIN, LOCATION_X.MAX) + ', ' + getRandomInteger(LOCATION_Y.MIN, LOCATION_Y.MAX),
       price: getRandomInteger(PRICE.MIN, PRICE.MAX),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(ROOMS.MIN, ROOMS.MAX),
@@ -124,13 +125,4 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-//Создает массив из карточек
-const createCards = (quantity) => {
-  let cardsList = [];
-  for (let i = 0; i < quantity; i++) {
-    cardsList.push(createOffer());
-  }
-  return cardsList;
-}
-
-export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, createCards, OFFER_COUNT };
+export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, tokyoLat, tokyoLng, markerWidth, markerHeight, mapScale };

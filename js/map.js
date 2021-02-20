@@ -1,7 +1,7 @@
 /* global L:readonly */
 import { formMapElement, formAdvertElement, addressElement } from './form.js';
-import { NUMBER_OF_SINGS, createCards, OFFER_COUNT } from './data.js';
-// import { similarCard } from './popup.js';
+import { NUMBER_OF_SINGS, createOffers, tokyoLat, tokyoLng, markerWidth, markerHeight, mapScale } from './data.js';
+import { similarCard } from './popup.js';
 
 //Отрисовывает карту
 const map = L.map('map-canvas')
@@ -15,9 +15,9 @@ const map = L.map('map-canvas')
   })
   //Центр карты
   .setView({
-    lat: 35.41371,
-    lng: 139.41501,
-  }, 10); //Масштаб карты
+    lat: tokyoLat,
+    lng: tokyoLng,
+  }, mapScale); //Масштаб карты
 
 //Добавляет слой изображения на карту
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -26,15 +26,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //Добавляет главную метку
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
-  iconSize: [50, 50],
-  iconAnchor: [25, 82],
+  iconUrl: 'img/main-pin.svg',
+  iconSize: [markerWidth, markerHeight],
+  iconAnchor: [markerWidth / 2, markerHeight],
 });
 
 const mainMarker = L.marker(
   {
-    lat: 35.41371,
-    lng: 139.41501,
+    lat: tokyoLat,
+    lng: tokyoLng,
   },
   {
     draggable: true, //Передвижение маркера по карте
@@ -45,7 +45,7 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 
-addressElement.value = '35.41371, 139.41501'; //Поле адреса заполнено всегда
+addressElement.value = '35.62605, 139.77081'; //Поле адреса заполнено всегда
 addressElement.setAttribute('readonly', ''); //Содержимое поля доступно только для чтения
 
 //Перемещение метки, округление координат до 5 символов после запятой
@@ -54,35 +54,14 @@ mainMarker.on('move', (evt) => {
 });
 
 //Добавляет обычные метки
-// const createMarker = () =>{
-// const pinIcon = L.icon({
-//   iconUrl: '../img/pin.svg',
-//   iconSize: [50, 50],
-//   iconAnchor: [25, 50],
-// });
-
-// const marker = L.marker(
-//   {
-//     lat: location.x,
-//     lng: location.y,
-//   },
-//   {
-//     icon: pinIcon,
-//   },
-// );
-
-// marker.addTo(map);
-
-const createMarker = createCards(OFFER_COUNT);
-
-createMarker.forEach((card) => {
+createOffers().forEach((card) => {
   const lat = card.location.x;
   const lng = card.location.y;
 
   const pinIcon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [50, 50],
-    iconAnchor: [25, 50],
+    iconUrl: 'img/pin.svg',
+    iconSize: [markerWidth, markerHeight],
+    iconAnchor: [markerWidth / 2, markerHeight],
   });
 
   const marker = L.marker(
@@ -91,13 +70,16 @@ createMarker.forEach((card) => {
       lng,
     },
     {
-      pinIcon,
+      icon: pinIcon,
     },
   );
 
   marker
     .addTo(map)
-    // .bindPopup(),
+    .bindPopup( //Добавляет балуны
+      similarCard(card),
+      {
+        keepInView: true, //Балуны не появляются вне видимой области
+      },
+    );
 });
-
-export { map, mainMarker, createMarker };
