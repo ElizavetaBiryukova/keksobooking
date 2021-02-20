@@ -1,6 +1,6 @@
 /* global L:readonly */
 import { formMapElement, formAdvertElement, addressElement } from './form.js';
-import { NUMBER_OF_SINGS, createOffers, tokyoLat, tokyoLng, markerWidth, markerHeight, mapScale } from './data.js';
+import { NUMBER_OF_SINGS, createOffers, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE} from './data.js';
 import { similarCard } from './popup.js';
 
 //Отрисовывает карту
@@ -15,9 +15,9 @@ const map = L.map('map-canvas')
   })
   //Центр карты
   .setView({
-    lat: tokyoLat,
-    lng: tokyoLng,
-  }, mapScale); //Масштаб карты
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
+  }, MAP_SCALE); //Масштаб карты
 
 //Добавляет слой изображения на карту
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -27,14 +27,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //Добавляет главную метку
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
-  iconSize: [markerWidth, markerHeight],
-  iconAnchor: [markerWidth / 2, markerHeight],
+  iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+  iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
 });
 
 const mainMarker = L.marker(
   {
-    lat: tokyoLat,
-    lng: tokyoLng,
+    lat: TOKYO_LAT,
+    lng: TOKYO_LNG,
   },
   {
     draggable: true, //Передвижение маркера по карте
@@ -60,8 +60,8 @@ createOffers().forEach((card) => {
 
   const pinIcon = L.icon({
     iconUrl: 'img/pin.svg',
-    iconSize: [markerWidth, markerHeight],
-    iconAnchor: [markerWidth / 2, markerHeight],
+    iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+    iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
   });
 
   const marker = L.marker(

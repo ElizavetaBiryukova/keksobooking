@@ -90,11 +90,11 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
-const tokyoLat = 35.62605;
-const tokyoLng = 139.77081;
-const markerWidth = 52;
-const markerHeight = 52;
-const mapScale = 10;
+const TOKYO_LAT = 35.62605;
+const TOKYO_LNG = 139.77081;
+const MARKER_WIDTH = 52;
+const MARKER_HEIGHT = 52;
+const MAP_SCALE = 10;
 
 const createOffer = () => {
   return {
@@ -125,4 +125,4 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, tokyoLat, tokyoLng, markerWidth, markerHeight, mapScale };
+export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE };
