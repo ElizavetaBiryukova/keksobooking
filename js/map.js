@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { formMapElement, formAdvertElement, addressElement } from './form.js';
+import { addressElement, makesActiveForm } from './form.js';
 import { NUMBER_OF_SINGS, createOffers, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE} from './data.js';
 import { similarCard } from './popup.js';
 
@@ -7,11 +7,7 @@ import { similarCard } from './popup.js';
 const map = L.map('map-canvas')
   //Добавляет события на карту: переводит страницу в активное состояние
   .on('load', () => {
-    formMapElement.classList.remove('map__filters--disabled');
-    formAdvertElement.classList.remove('ad-form--disabled');
-    formAdvertElement.removeAttribute('disabled', 'disabled');
-    formMapElement.removeAttribute('disabled', 'disabled');
-
+    makesActiveForm();
   })
   //Центр карты
   .setView({
@@ -46,7 +42,6 @@ mainMarker.addTo(map);
 
 
 addressElement.value = '35.62605, 139.77081'; //Поле адреса заполнено всегда
-addressElement.setAttribute('readonly', ''); //Содержимое поля доступно только для чтения
 
 //Перемещение метки, округление координат до 5 символов после запятой
 mainMarker.on('move', (evt) => {
