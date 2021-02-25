@@ -15,7 +15,7 @@ const getRandomFloat = (min, max, digit) => {
     [min, max] = [max, min];
   }
 
-  return (Math.floor(Math.random() * (max - min + min)) + min).toFixed(digit);
+  return (Math.random() * (max - min) + min).toFixed(digit);
 };
 
 const getRandomArrayElement = (elements) => {
