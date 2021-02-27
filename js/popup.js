@@ -1,4 +1,4 @@
-import { TYPE_HOUSE } from './data.js';
+import { TYPES  } from './data.js';
 import { numDecline } from './util.js';
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup'); //Находит шаблон для копировнаия
@@ -26,7 +26,7 @@ const similarCard = ({ author: { avatar }, offer: { title, address, price, type,
   }
   const offerType = cardElement.querySelector('.popup__type');
   if (type) {
-    offerType.textContent = TYPE_HOUSE[type].ru;
+    offerType.textContent = TYPES[type].ru;
   } else {
     offerType.remove();
   }

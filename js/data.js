@@ -34,12 +34,12 @@ const LOCATION_Y = {
 
 const NUMBER_OF_SINGS = 5;
 
-const TYPE_HOUSE = {
-  flat: { ru: 'Квартира' },
-  bungalow: { ru: 'Бунгало' },
-  house: { ru: 'Дом' },
-  palace: { ru: 'Дворец' },
-};
+const TYPES = {
+  flat: { ru: 'Квартира', minPrice: 1000 },
+  bungalow: { ru: 'Бунгало', minPrice: 0 },
+  house: { ru: 'Дом', minPrice: 5000 },
+  palace: { ru: 'Дворец', minPrice: 10000 },
+}
 
 const TITLES = [
   'Отель в Токио',
@@ -47,13 +47,6 @@ const TITLES = [
   'Отель в Хиросиме',
   'Отель в Осаке',
   'Отель в Саппоро',
-];
-
-const TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalow',
 ];
 
 const CHECKIN = [
@@ -95,6 +88,8 @@ const TOKYO_LNG = 139.77081;
 const MARKER_WIDTH = 52;
 const MARKER_HEIGHT = 52;
 const MAP_SCALE = 10;
+const MAIN_PIN_IMAGE = './img/main-pin.svg';
+const PIN_IMAGE = './img/pin.svg';
 
 const createOffer = () => {
   return {
@@ -125,4 +120,4 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE };
+export { createOffers, TYPES, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE };

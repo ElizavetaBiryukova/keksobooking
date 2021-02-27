@@ -1,6 +1,6 @@
 /* global L:readonly */
 import { addressElement, makesActiveForm } from './form.js';
-import { NUMBER_OF_SINGS, createOffers, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE} from './data.js';
+import { NUMBER_OF_SINGS, createOffers, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE } from './data.js';
 import { similarCard } from './popup.js';
 
 //Отрисовывает карту
@@ -22,7 +22,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 //Добавляет главную метку
 const mainPinIcon = L.icon({
-  iconUrl: 'img/main-pin.svg',
+  iconUrl: MAIN_PIN_IMAGE,
   iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
   iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
 });
@@ -54,7 +54,7 @@ createOffers().forEach((card) => {
   const lng = card.location.y;
 
   const pinIcon = L.icon({
-    iconUrl: 'img/pin.svg',
+    iconUrl: PIN_IMAGE,
     iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
     iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
   });
