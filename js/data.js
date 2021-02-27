@@ -7,11 +7,6 @@ const AVATAR = {
   MAX: 8,
 };
 
-const ADDRESS = {
-  MIN: 1,
-  MAX: 600,
-};
-
 const PRICE = {
   MIN: 1200,
   MAX: 1000000,
@@ -43,7 +38,7 @@ const TYPE_HOUSE = {
   flat: { ru: 'Квартира' },
   bungalow: { ru: 'Бунгало' },
   house: { ru: 'Дом' },
-  palace: { ru: 'Дворец'},
+  palace: { ru: 'Дворец' },
 };
 
 const TITLES = [
@@ -95,6 +90,12 @@ const PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
 
+const TOKYO_LAT = 35.62605;
+const TOKYO_LNG = 139.77081;
+const MARKER_WIDTH = 52;
+const MARKER_HEIGHT = 52;
+const MAP_SCALE = 10;
+
 const createOffer = () => {
   return {
     author: {
@@ -103,7 +104,7 @@ const createOffer = () => {
 
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: getRandomInteger(ADDRESS.MIN, ADDRESS.MAX) + ', ' + getRandomInteger(ADDRESS.MIN, ADDRESS.MAX),
+      address: getRandomInteger(LOCATION_X.MIN, LOCATION_X.MAX) + ', ' + getRandomInteger(LOCATION_Y.MIN, LOCATION_Y.MAX),
       price: getRandomInteger(PRICE.MIN, PRICE.MAX),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(ROOMS.MIN, ROOMS.MAX),
@@ -124,4 +125,4 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export { createOffers, TYPE_HOUSE };
+export { createOffers, TYPE_HOUSE, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE };

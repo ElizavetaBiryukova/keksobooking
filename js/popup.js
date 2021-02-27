@@ -1,36 +1,83 @@
-import { createOffers, TYPE_HOUSE } from './data.js';
+import { TYPE_HOUSE } from './data.js';
+import { numDecline } from './util.js';
 
-const mapCanvas = document.querySelector('#map-canvas'); //Блок для вставки похожих элементов
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup'); //Находит шаблон для копировнаия
 
 //Отрисовка шаблона с данными
 const similarCard = ({ author: { avatar }, offer: { title, address, price, type, rooms, guests, checkin, checkout, features, photos, description } }) => {
   const cardElement = cardTemplate.cloneNode(true);
-  cardElement.querySelector('.popup__title').textContent = title;
-  cardElement.querySelector('.popup__text--address').textContent = address;
-  cardElement.querySelector('.popup__text--price').textContent = `${price} ₽/ночь`;
-  cardElement.querySelector('.popup__type').textContent = TYPE_HOUSE[type].ru;
-  cardElement.querySelector('.popup__text--capacity').textContent = `${rooms} комнаты для ${guests} гостей`;
-  cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  const offerTitle = cardElement.querySelector('.popup__title');
+  if (title) {
+    offerTitle.textContent = title;
+  } else {
+    offerTitle.remove();
+  }
+  const offerAddress = cardElement.querySelector('.popup__text--address');
+  if (address) {
+    offerAddress.textContent = address;
+  } else {
+    offerAddress.remove();
+  }
+  const offerPrice = cardElement.querySelector('.popup__text--price');
+  if (price) {
+    offerPrice.textContent = `${price} ₽/ночь`;
+  } else {
+    offerPrice.remove();
+  }
+  const offerType = cardElement.querySelector('.popup__type');
+  if (type) {
+    offerType.textContent = TYPE_HOUSE[type].ru;
+  } else {
+    offerType.remove();
+  }
+  const offerCapacity = cardElement.querySelector('.popup__text--capacity');
+  if (rooms && guests) {
+    offerCapacity.textContent = `${rooms} ${numDecline(rooms, 'комната', 'комнаты', 'комнат')} для ${guests} ${numDecline(guests, 'гостя', 'гостей', 'гостей')}`;
+  } else {
+    offerCapacity.remove();
+  }
+  const offerTime = cardElement.querySelector('.popup__text--time');
+  if (checkin && checkout) {
+    offerTime.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  } else {
+    offerTime.remove();
+  }
   const featureList = cardElement.querySelector('.popup__features');
-  featureList.innerHTML = '';
-  for (let i = 0; i < features.length; i++) {
-    const featureElement = document.createElement('li');
-    const featureClass = `popup__feature--${features[i]}`;
-    featureElement.classList.add('popup__feature', featureClass);
-    featureList.appendChild(featureElement);
+  if (features) {
+    featureList.innerHTML = '';
+    for (let i = 0; i < features.length; i++) {
+      const featureElement = document.createElement('li');
+      const featureClass = `popup__feature--${features[i]}`;
+      featureElement.classList.add('popup__feature', featureClass);
+      featureList.appendChild(featureElement);
+    }
+  } else {
+    featureList.remove();
   }
-  cardElement.querySelector('.popup__description').textContent = description;
+  const offerDescription = cardElement.querySelector('.popup__description');
+  if (description) {
+    offerDescription.textContent = description;
+  } else {
+    offerDescription.remove();
+  }
   const photoList = cardElement.querySelector('.popup__photos');
-  photoList.innerHTML = '';
-  for (let i = 0; i < photos.length; i++) {
-    const photoElement = cardTemplate.querySelector('.popup__photo').cloneNode(true);
-    photoElement.src = photos[i];
-    photoList.appendChild(photoElement);
+  if (photos) {
+    photoList.innerHTML = '';
+    for (let i = 0; i < photos.length; i++) {
+      const photoElement = cardTemplate.querySelector('.popup__photo').cloneNode(true);
+      photoElement.src = photos[i];
+      photoList.appendChild(photoElement);
+    }
+  } else {
+    photoList.remove();
   }
-  cardElement.querySelector('.popup__avatar').src = avatar;
-  mapCanvas.appendChild(cardElement);
+  const authorAvatar = cardElement.querySelector('.popup__avatar');
+  if (avatar) {
+    authorAvatar.src = avatar;
+  } else {
+    authorAvatar.remove();
+  }
+  return cardElement;
 };
 
-similarCard(createOffers()[0]);
-
+export { similarCard }
