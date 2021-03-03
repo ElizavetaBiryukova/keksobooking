@@ -13,6 +13,12 @@ const titleInput = formAdvertElement.querySelector('#title');
 const roomNumber = formAdvertElement.querySelector('#room_number');
 const capacitySelect = formAdvertElement.querySelector('#capacity');
 const capacityOptions = capacitySelect.querySelectorAll('option');
+const numberOfGuests = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
+};
 
 //Выбор опции типа жилья меняет атрибуты минимального значения и плейсхолдера поля «Цена за ночь»
 typeSelect.addEventListener('change', () => {
@@ -83,13 +89,6 @@ priceInput.addEventListener('input', () => {
 });
 
 //Валидация полей количество комнат и количество мест
-const numberOfGuests = {
-  1: ['1'],
-  2: ['1', '2'],
-  3: ['1', '2', '3'],
-  100: ['0'],
-};
-
 const validateRooms = () => {
   const roomValue = roomNumber.value;
 
