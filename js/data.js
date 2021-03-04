@@ -90,6 +90,10 @@ const MARKER_HEIGHT = 52;
 const MAP_SCALE = 10;
 const MAIN_PIN_IMAGE = './img/main-pin.svg';
 const PIN_IMAGE = './img/pin.svg';
+const TITLE_LENGTH_FORM = {
+  MIN: 30,
+  MAX: 100,
+}
 
 const createOffer = () => {
   return {
@@ -120,4 +124,4 @@ const createOffer = () => {
 
 const createOffers = () => new Array(OFFER_COUNT).fill(null).map(() => createOffer());
 
-export { createOffers, TYPES, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE };
+export { createOffers, TYPES, NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, PRICE, TITLE_LENGTH_FORM };
