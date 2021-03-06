@@ -1,6 +1,6 @@
 /* global L:readonly */
 import { addressElement, makesActiveForm } from './form.js';
-import { NUMBER_OF_SINGS, createOffers, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE } from './data.js';
+import { NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE } from './data.js';
 import { similarCard } from './popup.js';
 
 //Отрисовывает карту
@@ -40,7 +40,6 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-
 addressElement.value = '35.62605, 139.77081'; //Поле адреса заполнено всегда
 
 //Перемещение метки, округление координат до 5 символов после запятой
@@ -49,32 +48,37 @@ mainMarker.on('move', (evt) => {
 });
 
 //Добавляет обычные метки
-createOffers().forEach((card) => {
-  const lat = card.location.x;
-  const lng = card.location.y;
+const createMapIcon = (offers) => {
+  offers.forEach((card) => {
+    const lat = card.location.x;
+    const lng = card.location.y;
 
-  const pinIcon = L.icon({
-    iconUrl: PIN_IMAGE,
-    iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-    iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
-  });
+    const pinIcon = L.icon({
+      iconUrl: PIN_IMAGE,
+      iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+      iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
+    });
 
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
-
-  marker
-    .addTo(map)
-    .bindPopup( //Добавляет балуны
-      similarCard(card),
+    const marker = L.marker(
       {
-        keepInView: true, //Балуны не появляются вне видимой области
+        lat,
+        lng,
+      },
+      {
+        icon: pinIcon,
       },
     );
-});
+
+    marker
+      .addTo(map)
+      .bindPopup( //Добавляет балуны
+        similarCard(card),
+        {
+          keepInView: true, //Балуны не появляются вне видимой области
+        },
+      );
+  });
+};
+
+// console.log();
+export {mainMarker, createMapIcon};
