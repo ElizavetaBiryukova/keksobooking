@@ -11,5 +11,3 @@ import {getData} from './fetch.js';
 getData((offers) => {
   createMapIcon(offers);
 });
-
-// console.log(getData);

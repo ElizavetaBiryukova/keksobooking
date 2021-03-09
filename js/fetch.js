@@ -1,15 +1,7 @@
 import { showModalError } from './retrieval-data.js';
-// import { similarCard } from './popup.js';
 
 const RECEIPT_SERVER = 'https://22.javascript.pages.academy/keksobooking/data';
 const DEPARTURE_SERVER = 'https://22.javascript.pages.academy/keksobooking';
-
-
-// fetch(RECEIPT_SERVER)
-//   .then((response) => response.json())
-//   .then((offers) => {
-//     console.log(offers);
-//   });
 
 //Получение данных с сервера
 const getData = (onSuccess) => {

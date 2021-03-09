@@ -50,8 +50,8 @@ mainMarker.on('move', (evt) => {
 //Добавляет обычные метки
 const createMapIcon = (offers) => {
   offers.forEach((card) => {
-    const lat = card.location.x;
-    const lng = card.location.y;
+    const lat = card.location.lat;
+    const lng = card.location.lng;
 
     const pinIcon = L.icon({
       iconUrl: PIN_IMAGE,
@@ -80,5 +80,4 @@ const createMapIcon = (offers) => {
   });
 };
 
-// console.log();
 export {mainMarker, createMapIcon};
