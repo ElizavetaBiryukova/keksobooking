@@ -93,20 +93,9 @@ const validateRooms = () => {
   const roomValue = roomNumber.value;
 
   capacityOptions.forEach(function (option) {
-    //Находит неподходящее число гостей для количества комнат.
-    //При выборе комнат метод indexOf возвращает индекс элементов, соответствующий значениям количесва гостей.
-    //Если индекс не получается найти, тогда indexOf возвращает -1.
-    //Нам нужно ,что бы значение всегда определялось, т.е. индекс был найден, поэтому находим индексы, которые >=0
-    //Теперь мы получаем булевые значения.
-    //Наши найденные гости будут true. Индексы, которые не удалось найти false.
-    //Дальше для скрытия неподходящих значений, инвертируем булевые с помощью !
-    //Например. Выбираем в поле ввода значение "2 комнаты",
-    //indexOF вернет для одного гостя индекс 0, для двух гостей индекс 1, для трех и "без гостей" вернет индекс -1, тк не найдет их в массиве
-    //Индексы найденных гостей >=0, поэтому для одного и двух гостей присваивается true, для трех  и "без гостей" false
-    //Меняем значения на противоположенные. Трем гостям и "без гостей" теперь присвоено значение true и мы их можем заблокировать и скрыть из списка
 
-    let isDisabled = !(numberOfGuests[roomValue].indexOf(option.value) >= 0 );
-    option.selected = numberOfGuests[roomValue] [0] === option.value;
+    let isDisabled = !(numberOfGuests[roomValue].indexOf(option.value) >= 0);
+    option.selected = numberOfGuests[roomValue][0] === option.value;
     option.disabled = isDisabled;
     option.hidden = isDisabled;
   });
@@ -119,4 +108,5 @@ const onRoomsNumberChange = () => {
 roomNumber.addEventListener('change', onRoomsNumberChange);
 validateRooms();
 
-export { addressElement, makesActiveForm }
+
+export { addressElement, makesActiveForm, formAdvertElement, formMapElement };
