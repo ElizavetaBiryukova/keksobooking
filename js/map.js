@@ -1,7 +1,10 @@
 /* global L:readonly */
 import { addressElement, makesActiveForm } from './form.js';
-import { NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE } from './data.js';
+import { NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, OFFER_COUNT } from './data.js';
 import { similarCard } from './popup.js';
+import { getFilters } from './filter.js';
+
+const MARKERS = [];
 
 //Отрисовывает карту
 const map = L.map('map-canvas')
@@ -49,35 +52,48 @@ mainMarker.on('move', (evt) => {
 
 //Добавляет обычные метки
 const createMapIcon = (offers) => {
-  offers.forEach((card) => {
-    const lat = card.location.lat;
-    const lng = card.location.lng;
+  offers
+    .slice()
+    .filter(getFilters)
+    .slice(0, OFFER_COUNT)
+    .forEach((card) => {
+      const lat = card.location.lat;
+      const lng = card.location.lng;
 
-    const pinIcon = L.icon({
-      iconUrl: PIN_IMAGE,
-      iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-      iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
-    });
+      const pinIcon = L.icon({
+        iconUrl: PIN_IMAGE,
+        iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+        iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
+      });
 
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon: pinIcon,
-      },
-    );
-
-    marker
-      .addTo(map)
-      .bindPopup( //Добавляет балуны
-        similarCard(card),
+      const marker = L.marker(
         {
-          keepInView: true, //Балуны не появляются вне видимой области
+          lat,
+          lng,
+        },
+        {
+          icon: pinIcon,
         },
       );
-  });
+
+      marker
+        .addTo(map)
+        .bindPopup( //Добавляет балуны
+          similarCard(card),
+          {
+            keepInView: true, //Балуны не появляются вне видимой области
+          },
+        );
+      MARKERS.push(marker);
+    })
+  return MARKERS
 };
 
-export {mainMarker, createMapIcon};
+const removeMapMarkers = () => {
+  MARKERS.forEach((marker) => {
+    marker.remove();
+  })
+  map.closePopup();
+};
+
+export { mainMarker, createMapIcon, removeMapMarkers };
