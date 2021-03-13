@@ -53,7 +53,7 @@ mainMarker.on('move', (evt) => {
 //Добавляет обычные метки
 const createMapIcon = (offers) => {
   offers
-    .slice()
+  // .filter не получается на цикл поменять, дождусь летучки
     .filter(getFilters)
     .slice(0, OFFER_COUNT)
     .forEach((card) => {
@@ -86,7 +86,6 @@ const createMapIcon = (offers) => {
         );
       MARKERS.push(marker);
     })
-  return MARKERS
 };
 
 const removeMapMarkers = () => {

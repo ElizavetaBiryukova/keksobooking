@@ -53,4 +53,13 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
   }
 };
 
-export {getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray, numDecline};
+//Функция устранения дребезга
+const debounce = (cb, delay) => {
+  let timeout;
+  return () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(cb, delay)
+  };
+};
+
+export {getRandomInteger, getRandomFloat, getRandomArrayElement, shuffleArray, numDecline, debounce};
