@@ -1,76 +1,74 @@
+import { OFFER_COUNT } from './data.js';
 import { formMapElement } from './form.js';
-import { removeMapMarkers } from './map.js';
 
-const filterType = formMapElement.querySelector('#housing-type');
-const filterPrice = formMapElement.querySelector('#housing-price');
-const filterRooms = formMapElement.querySelector('#housing-rooms');
-const filterGuests = formMapElement.querySelector('#housing-guests');
-const filterFeatures = formMapElement.querySelector('#housing-features');
-const NOT_SELECTED = 'any';
-const MIN_PRICE = 10000;
-const MAX_PRICE = 50000;
-const HIGH_PRICE_VALUE = 'high'
-const LOW_PRICE_VALUE = 'low'
-const MIDDLE_PRICE_VALUE = 'middle'
+const DEFAULT_VALUE = 'any';
 
-
-// Проверяем тип
-const checkedType = (data) => {
-  return data.offer.type === filterType.value || filterType.value === NOT_SELECTED;
+const priceMap = {
+  'low': {
+    start: 0,
+    end: 10000,
+  },
+  'middle': {
+    start: 10000,
+    end: 50000,
+  },
+  'high': {
+    start: 50000,
+    end: Infinity,
+  },
 };
 
-//Проверяем цены
-const checkPrice = (data) => {
-  switch (filterPrice.value) {
-    case LOW_PRICE_VALUE:
-      return data.offer.price < MIN_PRICE;
-    case MIDDLE_PRICE_VALUE:
-      return data.offer.price >= MIN_PRICE && data.offer.price <= MAX_PRICE;
-    case HIGH_PRICE_VALUE:
-      return data.offer.price > MAX_PRICE;
-    case NOT_SELECTED:
-      return true;
-  }
+const filters = Array.from(formMapElement.children);
+// console.log(filters);
+
+const filterRules = {
+  'housing-type': (data, filter) => {
+    return filter.value === data.offer.type;
+  },
+
+  'housing-price': (data, filter) => {
+    return data.offer.price >= priceMap[filter.value].start && data.offer.price < priceMap[filter.value].end;
+  },
+
+  'housing-rooms': (data, filter) => {
+    return filter.value === data.offer.rooms.toString();
+  },
+
+  'housing-guests': (data, filter) => {
+    return filter.value === data.offer.guests.toString();
+  },
+
+  'housing-feature': (data, filter) => {
+    let checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
+    return checkListElements.every((checkbox) => {
+      // console.log(1, checkbox)
+      return data.offer.features.some((feature) => {
+        // console.log(2, feature)
+        return feature === checkbox.value;
+
+      });
+    });
+  },
 };
+// console.log()
 
-//Проверяем колличество комнат
-const checkRooms = (data) => {
-  return data.offer.rooms === Number(filterRooms.value) || filterRooms.value === NOT_SELECTED;
-};
+const filterData = (data) => {
+  let offers = [];
+  let i = 0;
+  let result;
 
-//Проверяем гостей
-const checkGuests = (data) => {
-  return data.offer.guests === Number(filterGuests.value) || filterGuests.value === NOT_SELECTED;
-};
+  while (i < data.length && offers.length < OFFER_COUNT) {
+    result = filters.every((filter) => {
+      return (filter.value === DEFAULT_VALUE) ? true : filterRules[filter.id](data[i], filter);
+    });
 
-//Проверяет дополнительные условия
-const checkFeatures = (data) => {
-  const checkedFeatures = filterFeatures.querySelectorAll('input:checked');
-
-  if (checkedFeatures.length === 0) {
-    return true;
-  }
-
-  for (let feature of checkedFeatures) {
-    if (!data.offer.features.includes(feature.value)) {
-      return false;
+    if (result) {
+      offers.push(data[i]);
     }
+
+    i++;
   }
-
-  return true;
+  return offers;
 };
-
-//Возвращает отфильтрованные данные
-const getFilters = (data) => {
-  return checkedType(data) && checkPrice(data) && checkRooms(data) && checkGuests(data) && checkFeatures(data)
-};
-
-//Устанавливает фильтр
-const setFilterChange = (cb) => {
-  formMapElement.addEventListener('change', () => {
-    removeMapMarkers();
-    cb();
-  });
-};
-
-export { setFilterChange, getFilters }
+// console.log();
+export { filterData }

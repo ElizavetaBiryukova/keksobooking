@@ -1,10 +1,14 @@
 /* global L:readonly */
-import { addressElement, makesActiveForm } from './form.js';
-import { NUMBER_OF_SINGS, TOKYO_LAT, TOKYO_LNG, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, OFFER_COUNT } from './data.js';
+import { addressElement, makesActiveForm, formMapElement } from './form.js';
+import { NUMBER_OF_SINGS, LAT_MAIN_MARKER, LNG_MAIN_MARKER, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, OFFER_COUNT } from './data.js';
 import { similarCard } from './popup.js';
-import { getFilters } from './filter.js';
+import { filterData } from './filter.js';
+import { request } from './fetch.js';
+import { showModalError } from './retrieval-data.js';
+import { debounce } from './util.js';
 
-const MARKERS = [];
+let markers = [];
+const RERENDER_DELAY = 500;
 
 //Отрисовывает карту
 const map = L.map('map-canvas')
@@ -14,8 +18,8 @@ const map = L.map('map-canvas')
   })
   //Центр карты
   .setView({
-    lat: TOKYO_LAT,
-    lng: TOKYO_LNG,
+    lat: LAT_MAIN_MARKER,
+    lng: LNG_MAIN_MARKER,
   }, MAP_SCALE); //Масштаб карты
 
 //Добавляет слой изображения на карту
@@ -32,8 +36,8 @@ const mainPinIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: TOKYO_LAT,
-    lng: TOKYO_LNG,
+    lat: LAT_MAIN_MARKER,
+    lng: LNG_MAIN_MARKER,
   },
   {
     draggable: true, //Передвижение маркера по карте
@@ -43,56 +47,74 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-addressElement.value = '35.62605, 139.77081'; //Поле адреса заполнено всегда
+addressElement.value = LAT_MAIN_MARKER + ',' + LNG_MAIN_MARKER; //Поле адреса заполнено всегда
 
 //Перемещение метки, округление координат до 5 символов после запятой
 mainMarker.on('move', (evt) => {
   addressElement.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_SINGS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_SINGS)}`;
 });
 
-//Добавляет обычные метки
-const createMapIcon = (offers) => {
-  offers
-  // .filter не получается на цикл поменять, дождусь летучки
-    .filter(getFilters)
-    .slice(0, OFFER_COUNT)
-    .forEach((card) => {
-      const lat = card.location.lat;
-      const lng = card.location.lng;
-
-      const pinIcon = L.icon({
-        iconUrl: PIN_IMAGE,
-        iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
-        iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
-      });
-
-      const marker = L.marker(
-        {
-          lat,
-          lng,
-        },
-        {
-          icon: pinIcon,
-        },
-      );
-
-      marker
-        .addTo(map)
-        .bindPopup( //Добавляет балуны
-          similarCard(card),
-          {
-            keepInView: true, //Балуны не появляются вне видимой области
-          },
-        );
-      MARKERS.push(marker);
-    })
-};
+const layerGroup = L.layerGroup().addTo(map);
 
 const removeMapMarkers = () => {
-  MARKERS.forEach((marker) => {
-    marker.remove();
+  layerGroup.clearLayers();
+}
+
+//Добавляет обычные метки
+const createMapIcon = (offers) => {
+  offers.forEach((card) => {
+    const lat = card.location.lat;
+    const lng = card.location.lng;
+
+    const pinIcon = L.icon({
+      iconUrl: PIN_IMAGE,
+      iconSize: [MARKER_WIDTH, MARKER_HEIGHT],
+      iconAnchor: [MARKER_WIDTH / 2, MARKER_HEIGHT],
+    });
+
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon: pinIcon,
+      },
+    );
+
+    marker
+      .addTo(map)
+      .bindPopup( //Добавляет балуны
+        similarCard(card),
+        {
+          keepInView: true, //Балуны не появляются вне видимой области
+        },
+      );
   })
-  map.closePopup();
 };
 
-export { mainMarker, createMapIcon, removeMapMarkers };
+const onMapFiltersChange = () => {
+  removeMapMarkers()
+  filterData(debounce(
+    () => createMapIcon(markers),
+    RERENDER_DELAY,
+  ))
+};
+// console.log();
+
+const onSuccess = (data) => {
+  markers = data.slice(data.slice(0, OFFER_COUNT));
+  createMapIcon(markers);
+  formMapElement.addEventListener('change', onMapFiltersChange);
+};
+// console.log(onSuccess);
+
+const onError = () => {
+  showModalError('Коничева! Не удалось получить данные c сервера. Попробуйте позже.')
+};
+// console.log();
+
+request(onSuccess, onError, 'GET')
+// console.log(request);
+
+export { mainMarker };
