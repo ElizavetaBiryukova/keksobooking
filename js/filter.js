@@ -1,5 +1,5 @@
 import { OFFER_COUNT } from './data.js';
-import { formMapElement } from './form.js';
+import { mapFilters } from './form.js';
 
 const DEFAULT_VALUE = 'any';
 
@@ -19,8 +19,7 @@ const priceMap = {
 };
 
 //Создаем массив из коллекции формы
-const filters = Array.from(formMapElement.children);
-// console.log(filters);
+const filters = Array.from(mapFilters.children);
 
 //Правила сравнения значений
 const filterRules = {
@@ -44,9 +43,7 @@ const filterRules = {
     let checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
 
     return checkListElements.every((checkbox) => {
-      // console.log(1, checkbox)
       return data.offer.features.some((feature) => {
-        // console.log(2, feature)
         return feature === checkbox.value;
       });
 
@@ -54,8 +51,6 @@ const filterRules = {
   },
 
 };
-// console.log(filterRules)
-
 
 //Функция фильтрации
 const filterData = (data) => {
@@ -76,5 +71,5 @@ const filterData = (data) => {
   }
   return filteresOffers;
 };
-// console.log();
+
 export { filterData }

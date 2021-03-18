@@ -1,6 +1,5 @@
-// import { sendData } from './fetch.js';
 import { mainMarker } from './map.js';
-import { formAdvertElement, formMapElement } from './form.js';
+import { formAdvertElement, mapFilters } from './form.js';
 import { LAT_MAIN_MARKER, LNG_MAIN_MARKER } from './data.js';
 import { request } from './fetch.js';
 
@@ -14,7 +13,7 @@ const escape = 'Escape';
 resetForm.addEventListener('click', (evt) => {
   evt.preventDefault();
   formAdvertElement.reset();
-  formMapElement.reset();
+  mapFilters.reset();
   mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
 });
 
@@ -22,7 +21,7 @@ resetForm.addEventListener('click', (evt) => {
 const returnResetForm = () => {
   createSuccessMessage();
   formAdvertElement.reset();
-  formMapElement.reset();
+  mapFilters.reset();
   mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
 };
 
@@ -83,22 +82,17 @@ const closeErrorMessage = () => {
   document.removeEventListener('keydown', escapeErrorMessage);
 };
 
-// const onSuccess = () => {
-//   returnResetForm();
-// };
-
-// const onError = () => {
-//   createErrorMessage();
-// };
-
-// Обработчик отправки формы
-const setOfferFormSubmit = (onSuccess, onError) => {
-
-  formAdvertElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    request(() => onSuccess(),() => onError(), formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
-  });
+const onSuccess = () => {
+  returnResetForm();
 };
 
-setOfferFormSubmit(returnResetForm, createErrorMessage);
+const onError = () => {
+  createErrorMessage();
+};
+
+formAdvertElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  request( onSuccess, onError, formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
+});
+

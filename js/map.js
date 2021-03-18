@@ -1,5 +1,5 @@
 /* global L:readonly */
-import { addressElement, makesActiveForm, formMapElement } from './form.js';
+import { addressElement, makesActiveForm, mapFilters } from './form.js';
 import { NUMBER_OF_SINGS, LAT_MAIN_MARKER, LNG_MAIN_MARKER, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, OFFER_COUNT } from './data.js';
 import { similarCard } from './popup.js';
 import { filterData } from './filter.js';
@@ -47,7 +47,7 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-addressElement.value = LAT_MAIN_MARKER + ',' + LNG_MAIN_MARKER; //Поле адреса заполнено всегда
+addressElement.value = LAT_MAIN_MARKER + ', ' + LNG_MAIN_MARKER; //Поле адреса заполнено всегда
 
 //Перемещение метки, округление координат до 5 символов после запятой
 mainMarker.on('move', (evt) => {
@@ -84,7 +84,7 @@ const createMapIcon = (offers) => {
     );
 
     marker
-      .addTo(map)
+      .addTo(layerGroup)
       .bindPopup( //Добавляет балуны
         similarCard(card),
         {
@@ -96,26 +96,19 @@ const createMapIcon = (offers) => {
 
 const onMapFiltersChange = () => {
   removeMapMarkers()
-  filterData(debounce(
-    () => createMapIcon(markers),
-    RERENDER_DELAY,
-  ))
+  createMapIcon(filterData(markers.slice()))
 };
-// console.log();
 
 const onSuccess = (data) => {
   markers = data.slice();
   createMapIcon(markers.slice(0, OFFER_COUNT));
-  formMapElement.addEventListener('change', onMapFiltersChange);
+  mapFilters.addEventListener('change', debounce(onMapFiltersChange),RERENDER_DELAY);
 };
-// console.log(onSuccess);
 
 const onError = () => {
   showModalError('Коничева! Не удалось получить данные c сервера. Попробуйте позже.')
 };
-// console.log();
 
 request(onSuccess, onError, 'GET')
-// console.log(request);
 
 export { mainMarker };
