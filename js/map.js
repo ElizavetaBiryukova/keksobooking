@@ -58,6 +58,7 @@ const layerGroup = L.layerGroup().addTo(map);
 
 const removeMapMarkers = () => {
   layerGroup.clearLayers();
+  map.closePopup();
 }
 
 //Добавляет обычные метки
@@ -103,8 +104,8 @@ const onMapFiltersChange = () => {
 // console.log();
 
 const onSuccess = (data) => {
-  markers = data.slice(data.slice(0, OFFER_COUNT));
-  createMapIcon(markers);
+  markers = data.slice();
+  createMapIcon(markers.slice(0, OFFER_COUNT));
   formMapElement.addEventListener('change', onMapFiltersChange);
 };
 // console.log(onSuccess);

@@ -83,22 +83,22 @@ const closeErrorMessage = () => {
   document.removeEventListener('keydown', escapeErrorMessage);
 };
 
-const onSuccess = () => {
-  returnResetForm();
-};
+// const onSuccess = () => {
+//   returnResetForm();
+// };
 
-const onError = () => {
-  createErrorMessage();
-};
+// const onError = () => {
+//   createErrorMessage();
+// };
 
 // Обработчик отправки формы
-const setOfferFormSubmit = () => {
+const setOfferFormSubmit = (onSuccess, onError) => {
 
   formAdvertElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    request(onSuccess, onError, formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
+    request(() => onSuccess(),() => onError(), formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
   });
 };
 
-setOfferFormSubmit();
+setOfferFormSubmit(returnResetForm, createErrorMessage);

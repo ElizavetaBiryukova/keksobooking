@@ -18,9 +18,11 @@ const priceMap = {
   },
 };
 
+//Создаем массив из коллекции формы
 const filters = Array.from(formMapElement.children);
 // console.log(filters);
 
+//Правила сравнения значений
 const filterRules = {
   'housing-type': (data, filter) => {
     return filter.value === data.offer.type;
@@ -38,37 +40,41 @@ const filterRules = {
     return filter.value === data.offer.guests.toString();
   },
 
-  'housing-feature': (data, filter) => {
+  'housing-features': (data, filter) => {
     let checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
+
     return checkListElements.every((checkbox) => {
       // console.log(1, checkbox)
       return data.offer.features.some((feature) => {
         // console.log(2, feature)
         return feature === checkbox.value;
-
       });
+
     });
   },
-};
-// console.log()
 
+};
+// console.log(filterRules)
+
+
+//Функция фильтрации
 const filterData = (data) => {
-  let offers = [];
+  let filteresOffers = [];
   let i = 0;
   let result;
 
-  while (i < data.length && offers.length < OFFER_COUNT) {
+  while (i < data.length && filteresOffers.length < OFFER_COUNT) {
     result = filters.every((filter) => {
       return (filter.value === DEFAULT_VALUE) ? true : filterRules[filter.id](data[i], filter);
     });
 
     if (result) {
-      offers.push(data[i]);
+      filteresOffers.push(data[i]);
     }
 
     i++;
   }
-  return offers;
+  return filteresOffers;
 };
 // console.log();
 export { filterData }
