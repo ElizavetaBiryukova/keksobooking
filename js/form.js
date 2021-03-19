@@ -1,9 +1,9 @@
-import { TYPES, PRICE, TITLE_LENGTH_FORM } from './data.js';
+import { TYPES, Price, TitleLengthForm } from './data.js';
 
-const formMapElement = document.querySelector('.map__filters');
+const mapFilters = document.querySelector('.map__filters');
 const formAdvertElement = document.querySelector('.ad-form');
 const fieldsets = document.querySelectorAll('fieldset');
-const selectsFilter = formMapElement.querySelectorAll('select');
+const selectsFilter = mapFilters.querySelectorAll('select');
 const addressElement = document.querySelector('#address');
 const typeSelect = formAdvertElement.querySelector('#type');
 const priceInput = formAdvertElement.querySelector('#price');
@@ -43,7 +43,7 @@ const setDisabledState = (elements) => {
 };
 
 const makesInactiveForm = () => {
-  formMapElement.classList.add('map__filters--disabled');
+  mapFilters.classList.add('map__filters--disabled');
   formAdvertElement.classList.add('ad-form--disabled');
 
   setDisabledState(fieldsets);
@@ -53,7 +53,7 @@ const makesInactiveForm = () => {
 makesInactiveForm();
 
 const makesActiveForm = () => {
-  formMapElement.classList.remove('map__filters--disabled');
+  mapFilters.classList.remove('map__filters--disabled');
   formAdvertElement.classList.remove('ad-form--disabled');
 
   setDisabledState(fieldsets);
@@ -63,10 +63,10 @@ const makesActiveForm = () => {
 //Валидация заголовка объявления
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
-  if (valueLength < TITLE_LENGTH_FORM.MIN) {
-    titleInput.setCustomValidity(`Введите ещё ${TITLE_LENGTH_FORM.MIN - valueLength} симв.`)
-  } else if (valueLength > TITLE_LENGTH_FORM.MAX) {
-    titleInput.setCustomValidity(`Удалите лишние ${valueLength - TITLE_LENGTH_FORM.MAX} симв.`)
+  if (valueLength < TitleLengthForm.MIN) {
+    titleInput.setCustomValidity(`Введите ещё ${TitleLengthForm.MIN - valueLength} симв.`)
+  } else if (valueLength > TitleLengthForm.MAX) {
+    titleInput.setCustomValidity(`Удалите лишние ${valueLength - TitleLengthForm.MAX} симв.`)
   } else {
     titleInput.setCustomValidity('');
   }
@@ -79,8 +79,8 @@ titleInput.addEventListener('input', () => {
 priceInput.addEventListener('input', () => {
   const priceValue = priceInput.value.length;
 
-  if (priceValue > PRICE.MAX) {
-    priceInput.setCustomValidity(`Цена должна быть меньше ${PRICE.MAX}`);
+  if (priceValue > Price.MAX) {
+    priceInput.setCustomValidity(`Цена должна быть меньше ${Price.MAX}`);
   } else {
     priceInput.setCustomValidity('');
   }
@@ -109,4 +109,4 @@ roomNumber.addEventListener('change', onRoomsNumberChange);
 validateRooms();
 
 
-export { addressElement, makesActiveForm, formAdvertElement, formMapElement };
+export { addressElement, makesActiveForm, formAdvertElement, mapFilters };

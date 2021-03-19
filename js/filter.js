@@ -1,29 +1,75 @@
-import { formMapElement } from './form.js';
-import { removeMapMarkers } from './map.js';
+import { OFFER_COUNT } from './data.js';
+import { mapFilters } from './form.js';
 
-const filterType = formMapElement.querySelector('#housing-type');
-// const filterPrice = formMapElement.querySelector('#housing-price');
-// const filterRooms = formMapElement.querySelector('#housing-rooms');
-// const filterGuests = formMapElement.querySelector('#housing-guests');
-// const filterFeatures = formMapElement.querySelector('#housing-features');
-const NOT_SELECTED = 'any'
+const DEFAULT_VALUE = 'any';
 
-// Проверяем тип
-const checkedType = (data) => {
-  return data.offer.type === filterType.value || filterType.value === NOT_SELECTED;
+const priceMap = {
+  'low': {
+    start: 0,
+    end: 10000,
+  },
+  'middle': {
+    start: 10000,
+    end: 50000,
+  },
+  'high': {
+    start: 50000,
+    end: Infinity,
+  },
 };
 
-//Возвращает отфильтрованные данные
-const getFilters = (data) => {
-  return checkedType(data)
+//Создаем массив из коллекции формы
+const filters = Array.from(mapFilters.children);
+
+//Правила сравнения значений
+const filterRules = {
+  'housing-type': (data, filter) => {
+    return filter.value === data.offer.type;
+  },
+
+  'housing-price': (data, filter) => {
+    return data.offer.price >= priceMap[filter.value].start && data.offer.price < priceMap[filter.value].end;
+  },
+
+  'housing-rooms': (data, filter) => {
+    return filter.value === data.offer.rooms.toString();
+  },
+
+  'housing-guests': (data, filter) => {
+    return filter.value === data.offer.guests.toString();
+  },
+
+  'housing-features': (data, filter) => {
+    let checkListElements = Array.from(filter.querySelectorAll('input[type="checkbox"]:checked'));
+
+    return checkListElements.every((checkbox) => {
+      return data.offer.features.some((feature) => {
+        return feature === checkbox.value;
+      });
+
+    });
+  },
+
 };
 
-//Устанавливает фильтр
-const setFilterChange = (cb) => {
-  formMapElement.addEventListener('change', () => {
-    removeMapMarkers();
-    cb();
-  });
+//Функция фильтрации
+const filterData = (data) => {
+  let filteresOffers = [];
+  let i = 0;
+  let result;
+
+  while (i < data.length && filteresOffers.length < OFFER_COUNT) {
+    result = filters.every((filter) => {
+      return (filter.value === DEFAULT_VALUE) ? true : filterRules[filter.id](data[i], filter);
+    });
+
+    if (result) {
+      filteresOffers.push(data[i]);
+    }
+
+    i++;
+  }
+  return filteresOffers;
 };
 
-export { setFilterChange, getFilters }
+export { filterData }

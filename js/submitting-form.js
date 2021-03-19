@@ -1,7 +1,7 @@
-import { sendData } from './fetch.js';
 import { mainMarker } from './map.js';
-import { formAdvertElement, formMapElement } from './form.js';
-import { TOKYO_LAT, TOKYO_LNG } from './data.js';
+import { formAdvertElement, mapFilters } from './form.js';
+import { LAT_MAIN_MARKER, LNG_MAIN_MARKER } from './data.js';
+import { request } from './fetch.js';
 
 const resetForm = formAdvertElement.querySelector('.ad-form__reset');
 const successMessage = document.querySelector('#success').content;
@@ -13,16 +13,16 @@ const escape = 'Escape';
 resetForm.addEventListener('click', (evt) => {
   evt.preventDefault();
   formAdvertElement.reset();
-  formMapElement.reset();
-  mainMarker.setLatLng([TOKYO_LAT, TOKYO_LNG]);
+  mapFilters.reset();
+  mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
 });
 
 //Возвращение формы в исходное состояние при успешной отправке
 const returnResetForm = () => {
   createSuccessMessage();
   formAdvertElement.reset();
-  formMapElement.reset();
-  mainMarker.setLatLng([TOKYO_LAT, TOKYO_LNG]);
+  mapFilters.reset();
+  mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
 };
 
 //Сообщение об успешном создании объявления
@@ -57,7 +57,7 @@ const closeSuccessMessage = () => {
 const createErrorMessage = () => {
   const error = errorMessage.cloneNode(true);
   document.addEventListener('keydown', escapeErrorMessage);
-  document.addEventListener('click', closeErrorMessage );
+  document.addEventListener('click', closeErrorMessage);
   main.appendChild(error);
 };
 
@@ -70,7 +70,7 @@ const escapeErrorMessage = (evt) => {
   }
 
   document.removeEventListener('keydown', escapeErrorMessage);
-  document.removeEventListener('click', closeErrorMessage );
+  document.removeEventListener('click', closeErrorMessage);
 };
 
 //Закрытие сообщения с ошибкой кликом
@@ -78,22 +78,21 @@ const closeErrorMessage = () => {
   const errorModalMessage = main.querySelector('.error')
   errorModalMessage.remove();
 
-  document.removeEventListener('click', closeErrorMessage );
+  document.removeEventListener('click', closeErrorMessage);
   document.removeEventListener('keydown', escapeErrorMessage);
 };
 
-//Обработчик отправки формы
-const setOfferFormSubmit = (onSuccess, onFail) => {
-
-  formAdvertElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    sendData(
-      () => onSuccess(),
-      () => onFail(),
-      new FormData(evt.target),
-    );
-  });
+const onSuccess = () => {
+  returnResetForm();
 };
 
-setOfferFormSubmit(returnResetForm, createErrorMessage);
+const onError = () => {
+  createErrorMessage();
+};
+
+formAdvertElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  request( onSuccess, onError, formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
+});
+
