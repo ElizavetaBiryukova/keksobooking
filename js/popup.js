@@ -1,6 +1,11 @@
-import { TYPES  } from './data.js';
-import { numDecline } from './util.js';
+import { getNumberDecline } from './util.js';
 
+const priceToType = {
+  flat: { ru: 'Квартира', minPrice: 1000 },
+  bungalow: { ru: 'Бунгало', minPrice: 0 },
+  house: { ru: 'Дом', minPrice: 5000 },
+  palace: { ru: 'Дворец', minPrice: 10000 },
+};
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup'); //Находит шаблон для копировнаия
 
 //Отрисовка шаблона с данными
@@ -26,13 +31,13 @@ const similarCard = ({ author: { avatar }, offer: { title, address, price, type,
   }
   const offerType = cardElement.querySelector('.popup__type');
   if (type) {
-    offerType.textContent = TYPES[type].ru;
+    offerType.textContent = priceToType[type].ru;
   } else {
     offerType.remove();
   }
   const offerCapacity = cardElement.querySelector('.popup__text--capacity');
   if (rooms && guests) {
-    offerCapacity.textContent = `${rooms} ${numDecline(rooms, 'комната', 'комнаты', 'комнат')} для ${guests} ${numDecline(guests, 'гостя', 'гостей', 'гостей')}`;
+    offerCapacity.textContent = `${rooms} ${getNumberDecline(rooms, 'комната', 'комнаты', 'комнат')} для ${guests} ${getNumberDecline(guests, 'гостя', 'гостей', 'гостей')}`;
   } else {
     offerCapacity.remove();
   }
@@ -80,4 +85,4 @@ const similarCard = ({ author: { avatar }, offer: { title, address, price, type,
   return cardElement;
 };
 
-export { similarCard }
+export { similarCard, priceToType }

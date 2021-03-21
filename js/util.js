@@ -1,9 +1,9 @@
 //Функция склонения существительных
-const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
-  if(num > 10 && (Math.round((num % 100) / 10)) === 1) {
+const getNumberDecline = (number, nominative, genitiveSingular, genitivePlural) => {
+  if(number > 10 && (Math.round((number % 100) / 10)) === 1) {
     return genitivePlural;
   } else {
-    switch(num % 10) {
+    switch(number % 10) {
       case 1: return nominative;
       case 2:
       case 3:
@@ -22,4 +22,4 @@ const debounce = (cb, delay) => {
   };
 };
 
-export { numDecline, debounce};
+export { getNumberDecline, debounce};

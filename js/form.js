@@ -1,38 +1,47 @@
-import { TYPES, Price, TitleLengthForm } from './data.js';
+import { priceToType } from './popup.js';
 
-const mapFilters = document.querySelector('.map__filters');
-const formAdvertElement = document.querySelector('.ad-form');
-const fieldsets = document.querySelectorAll('fieldset');
-const selectsFilter = mapFilters.querySelectorAll('select');
-const addressElement = document.querySelector('#address');
-const typeSelect = formAdvertElement.querySelector('#type');
-const priceInput = formAdvertElement.querySelector('#price');
-const selectTimeIn = formAdvertElement.querySelector('#timein');
-const selectTimeOut = formAdvertElement.querySelector('#timeout');
-const titleInput = formAdvertElement.querySelector('#title');
-const roomNumber = formAdvertElement.querySelector('#room_number');
-const capacitySelect = formAdvertElement.querySelector('#capacity');
-const capacityOptions = capacitySelect.querySelectorAll('option');
-const numberOfGuests = {
+const PRICE_MAX = 1000000;
+const TitleLengthForm = {
+  MIN: 30,
+  MAX: 100,
+};
+const numbersOfGuests = {
   1: ['1'],
   2: ['1', '2'],
   3: ['1', '2', '3'],
   100: ['0'],
 };
+const mapFilters = document.querySelector('.map__filters');
+const form = document.querySelector('.ad-form');
+const fieldsets = document.querySelectorAll('fieldset');
+const selectsFilter = mapFilters.querySelectorAll('select');
+const addressInput = document.querySelector('#address');
+const typeSelect = form.querySelector('#type');
+const priceInput = form.querySelector('#price');
+const timeInSelect = form.querySelector('#timein');
+const timeOutSelect = form.querySelector('#timeout');
+const titleInput = form.querySelector('#title');
+const roomNumber = form.querySelector('#room_number');
+const capacitySelect = form.querySelector('#capacity');
+const capacityOptions = capacitySelect.querySelectorAll('option');
 
 //Выбор опции типа жилья меняет атрибуты минимального значения и плейсхолдера поля «Цена за ночь»
-typeSelect.addEventListener('change', () => {
-  priceInput.min = TYPES[typeSelect.value].minPrice;
-  priceInput.placeholder = TYPES[typeSelect.value].minPrice;
-});
+const onSelectTypeChange = () => {
+  priceInput.min = priceToType[typeSelect.value].minPrice;
+  priceInput.placeholder = priceToType[typeSelect.value].minPrice;
+};
+
+onSelectTypeChange();
+typeSelect.addEventListener('change', onSelectTypeChange);
 
 //Выбор опции "Время заезда" автоматически изменят значение "Время выезда"
-selectTimeIn.addEventListener('change', () => {
-  selectTimeOut.value = selectTimeIn.value;
+timeInSelect.addEventListener('change', () => {
+  timeOutSelect.value = timeInSelect.value;
 });
 
-selectTimeOut.addEventListener('change', () => {
-  selectTimeIn.value = selectTimeOut.value;
+//Выбор опции "Время выезда" автоматически изменят значение "Время заезда"
+timeOutSelect.addEventListener('change', () => {
+  timeInSelect.value = timeOutSelect.value;
 });
 
 //Переводит страницу в неактивное и активное состояния
@@ -44,7 +53,7 @@ const setDisabledState = (elements) => {
 
 const makesInactiveForm = () => {
   mapFilters.classList.add('map__filters--disabled');
-  formAdvertElement.classList.add('ad-form--disabled');
+  form.classList.add('ad-form--disabled');
 
   setDisabledState(fieldsets);
   setDisabledState(selectsFilter);
@@ -54,7 +63,7 @@ makesInactiveForm();
 
 const makesActiveForm = () => {
   mapFilters.classList.remove('map__filters--disabled');
-  formAdvertElement.classList.remove('ad-form--disabled');
+  form.classList.remove('ad-form--disabled');
 
   setDisabledState(fieldsets);
   setDisabledState(selectsFilter);
@@ -79,8 +88,8 @@ titleInput.addEventListener('input', () => {
 priceInput.addEventListener('input', () => {
   const priceValue = priceInput.value.length;
 
-  if (priceValue > Price.MAX) {
-    priceInput.setCustomValidity(`Цена должна быть меньше ${Price.MAX}`);
+  if (priceValue > PRICE_MAX) {
+    priceInput.setCustomValidity(`Цена должна быть меньше ${PRICE_MAX}`);
   } else {
     priceInput.setCustomValidity('');
   }
@@ -94,8 +103,8 @@ const validateRooms = () => {
 
   capacityOptions.forEach(function (option) {
 
-    let isDisabled = !(numberOfGuests[roomValue].indexOf(option.value) >= 0);
-    option.selected = numberOfGuests[roomValue][0] === option.value;
+    let isDisabled = !(numbersOfGuests[roomValue].indexOf(option.value) >= 0);
+    option.selected = numbersOfGuests[roomValue][0] === option.value;
     option.disabled = isDisabled;
     option.hidden = isDisabled;
   });
@@ -109,4 +118,4 @@ roomNumber.addEventListener('change', onRoomsNumberChange);
 validateRooms();
 
 
-export { addressElement, makesActiveForm, formAdvertElement, mapFilters };
+export { addressInput, makesActiveForm, form, mapFilters, onSelectTypeChange };
