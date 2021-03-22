@@ -27,13 +27,9 @@ userPhotoInput.addEventListener('change', (evt) => {
   checkFile(evt.target, userPhotoImage)
 });
 
-const removeOneImage = (container) => {
-  container.removeChild(container.firstChild)
-};
-
 const createOneImage = (container, alt) => {
   if (container.hasChildNodes()) {
-    removeOneImage(container);
+    container.innerHTML = '';
   }
   const image = document.createElement('img');
   image.style.width = '100%';
@@ -51,7 +47,7 @@ housingPhotoInput.addEventListener('change', (evt) => {
 
 const resetPreviews = () => {
   userPhotoImage.src = USER_PHOTO_EMPTY;
-  removeOneImage(housingPhotoContainer);
+  housingPhotoContainer.innerHTML = '';
 };
 
 export { resetPreviews }
