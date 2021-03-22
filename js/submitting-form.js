@@ -3,11 +3,12 @@ import { form, mapFilters, onSelectTypeChange } from './form.js';
 import { request } from './fetch.js';
 import { resetPreviews } from './photo.js';
 
+const Keys = { ESCAPE: 'Escape', ESC: 'Esc' };
 const resetForm = form.querySelector('.ad-form__reset');
 const successMessage = document.querySelector('#success').content;
 const errorMessage = document.querySelector('#error').content;
 const main = document.querySelector('main');
-const escape = 'Escape';
+
 
 //Кнопка сброса формы
 resetForm.addEventListener('click', (evt) => {
@@ -43,7 +44,7 @@ const createSuccessMessage = () => {
 const escapeSuccessMessage = (evt) => {
   const modalMessage = main.querySelector('.success')
   evt.preventDefault();
-  if (evt.key === escape) {
+  if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
     modalMessage.remove();
   }
 
@@ -71,7 +72,7 @@ const createErrorMessage = () => {
 const escapeErrorMessage = (evt) => {
   const errorModalMessage = main.querySelector('.error')
   evt.preventDefault();
-  if (evt.key === escape) {
+  if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
     errorModalMessage.remove();
   }
 
