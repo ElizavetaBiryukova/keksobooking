@@ -1,14 +1,22 @@
 /* global L:readonly */
-import { addressElement, makesActiveForm, mapFilters } from './form.js';
-import { NUMBER_OF_SINGS, LAT_MAIN_MARKER, LNG_MAIN_MARKER, MARKER_WIDTH, MARKER_HEIGHT, MAP_SCALE, MAIN_PIN_IMAGE, PIN_IMAGE, OFFER_COUNT } from './data.js';
+import { addressInput, makesActiveForm, mapFilters } from './form.js';
 import { similarCard } from './popup.js';
 import { filterData } from './filter.js';
 import { request } from './fetch.js';
-import { showModalError } from './retrieval-data.js';
+import { showModalError } from './error.js';
 import { debounce } from './util.js';
 
 let markers = [];
 const RERENDER_DELAY = 500;
+const OFFER_COUNT = 10;
+const NUMBER_OF_SINGS = 5;
+const LAT_MAIN_MARKER = 35.62605;
+const LNG_MAIN_MARKER = 139.77081;
+const MARKER_WIDTH = 52;
+const MARKER_HEIGHT = 52;
+const MAP_SCALE = 10;
+const MAIN_PIN_IMAGE = './img/main-pin.svg';
+const PIN_IMAGE = './img/pin.svg';
 
 //Отрисовывает карту
 const map = L.map('map-canvas')
@@ -47,11 +55,11 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(map);
 
-addressElement.value = LAT_MAIN_MARKER + ', ' + LNG_MAIN_MARKER; //Поле адреса заполнено всегда
+addressInput.value = LAT_MAIN_MARKER + ', ' + LNG_MAIN_MARKER; //Поле адреса заполнено всегда
 
 //Перемещение метки, округление координат до 5 символов после запятой
 mainMarker.on('move', (evt) => {
-  addressElement.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_SINGS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_SINGS)}`;
+  addressInput.value = `${evt.target.getLatLng().lat.toFixed(NUMBER_OF_SINGS)}, ${evt.target.getLatLng().lng.toFixed(NUMBER_OF_SINGS)}`;
 });
 
 const layerGroup = L.layerGroup().addTo(map);
@@ -111,4 +119,4 @@ const onError = () => {
 
 request(onSuccess, onError, 'GET')
 
-export { mainMarker };
+export { mainMarker, createMapIcon, markers, OFFER_COUNT, LAT_MAIN_MARKER, LNG_MAIN_MARKER };

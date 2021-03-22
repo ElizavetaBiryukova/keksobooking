@@ -3,6 +3,7 @@ const Urls = {
   POST: 'https://22.javascript.pages.academy/keksobooking',
 };
 
+//Функция для отправки заапроса на сервер и подгружения информации
 const request = (onSuccess, onError, method, data) => {
   fetch(
     Urls[method],

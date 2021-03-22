@@ -1,8 +1,7 @@
-import { OFFER_COUNT } from './data.js';
+import { OFFER_COUNT } from './map.js';
 import { mapFilters } from './form.js';
 
 const DEFAULT_VALUE = 'any';
-
 const priceMap = {
   'low': {
     start: 0,

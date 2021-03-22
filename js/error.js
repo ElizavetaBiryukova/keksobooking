@@ -8,8 +8,8 @@ const showModalError = (message) => {
   alertContainer.style.left = 0;
   alertContainer.style.top = 0;
   alertContainer.style.right = 0;
-  alertContainer.style.padding = '40px 3px';
-  alertContainer.style.fontSize = '50px';
+  alertContainer.style.padding = '25px 3px';
+  alertContainer.style.fontSize = '35px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 

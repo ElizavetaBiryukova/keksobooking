@@ -1,9 +1,9 @@
-import { mainMarker } from './map.js';
-import { formAdvertElement, mapFilters } from './form.js';
-import { LAT_MAIN_MARKER, LNG_MAIN_MARKER } from './data.js';
+import { mainMarker, createMapIcon, markers, LAT_MAIN_MARKER, LNG_MAIN_MARKER } from './map.js';
+import { form, mapFilters, onSelectTypeChange } from './form.js';
 import { request } from './fetch.js';
+import { resetPreviews } from './photo.js';
 
-const resetForm = formAdvertElement.querySelector('.ad-form__reset');
+const resetForm = form.querySelector('.ad-form__reset');
 const successMessage = document.querySelector('#success').content;
 const errorMessage = document.querySelector('#error').content;
 const main = document.querySelector('main');
@@ -12,17 +12,23 @@ const escape = 'Escape';
 //Кнопка сброса формы
 resetForm.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formAdvertElement.reset();
+  form.reset();
+  createMapIcon(markers);
   mapFilters.reset();
   mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
+  onSelectTypeChange();
+  resetPreviews();
 });
 
 //Возвращение формы в исходное состояние при успешной отправке
 const returnResetForm = () => {
   createSuccessMessage();
-  formAdvertElement.reset();
+  form.reset();
+  createMapIcon(markers);
   mapFilters.reset();
   mainMarker.setLatLng([LAT_MAIN_MARKER, LNG_MAIN_MARKER]);
+  resetPreviews();
+  onSelectTypeChange();
 };
 
 //Сообщение об успешном создании объявления
@@ -90,9 +96,9 @@ const onError = () => {
   createErrorMessage();
 };
 
-formAdvertElement.addEventListener('submit', (evt) => {
+form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  request( onSuccess, onError, formAdvertElement.method.toUpperCase(), new FormData(formAdvertElement))
+  request(onSuccess, onError, form.method.toUpperCase(), new FormData(form))
 });
 
