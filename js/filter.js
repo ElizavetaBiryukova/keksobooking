@@ -53,22 +53,22 @@ const filterRules = {
 
 //Функция фильтрации
 const filterData = (data) => {
-  let filteresOffers = [];
+  let filtersOffers = [];
   let i = 0;
   let result;
 
-  while (i < data.length && filteresOffers.length < OFFER_COUNT) {
+  while (i < data.length && filtersOffers.length < OFFER_COUNT) {
     result = filters.every((filter) => {
       return (filter.value === DEFAULT_VALUE) ? true : filterRules[filter.id](data[i], filter);
     });
 
     if (result) {
-      filteresOffers.push(data[i]);
+      filtersOffers.push(data[i]);
     }
 
     i++;
   }
-  return filteresOffers;
+  return filtersOffers;
 };
 
 export { filterData }
