@@ -35,58 +35,58 @@ const returnResetForm = () => {
 //Сообщение об успешном создании объявления
 const createSuccessMessage = () => {
   const successModalMessage = successMessage.cloneNode(true);
-  document.addEventListener('keydown', escapeSuccessMessage);
-  document.addEventListener('click', closeSuccessMessage);
+  document.addEventListener('keydown', escapeSuccessMessageHandler);
+  document.addEventListener('click', closeSuccessMessageHandler);
   main.appendChild(successModalMessage);
 };
 
 //Закрытие сообщения об успешном создании клавишей Esc
-const escapeSuccessMessage = (evt) => {
+const escapeSuccessMessageHandler = (evt) => {
   const modalMessage = main.querySelector('.success')
   evt.preventDefault();
   if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
     modalMessage.remove();
   }
 
-  document.removeEventListener('keydown', escapeSuccessMessage);
-  document.removeEventListener('click', closeSuccessMessage);
+  document.removeEventListener('keydown', escapeSuccessMessageHandler);
+  document.removeEventListener('click', closeSuccessMessageHandler);
 };
 
 //Закрытие сообщения об успешеом создании кликом
-const closeSuccessMessage = () => {
+const closeSuccessMessageHandler = () => {
   const modalMessage = main.querySelector('.success')
   modalMessage.remove();
-  document.removeEventListener('click', closeSuccessMessage);
-  document.removeEventListener('keydown', escapeSuccessMessage);
+  document.removeEventListener('click', closeSuccessMessageHandler);
+  document.removeEventListener('keydown', escapeSuccessMessageHandler);
 };
 
 //Сообщение об ошибке создания объявления
 const createErrorMessage = () => {
   const error = errorMessage.cloneNode(true);
-  document.addEventListener('keydown', escapeErrorMessage);
-  document.addEventListener('click', closeErrorMessage);
+  document.addEventListener('keydown', escapeErrorMessageHandler);
+  document.addEventListener('click', closeErrorMessageHandler);
   main.appendChild(error);
 };
 
 //Закрытие сообщения c ошибкой клавишей Esc
-const escapeErrorMessage = (evt) => {
+const escapeErrorMessageHandler = (evt) => {
   const errorModalMessage = main.querySelector('.error')
   evt.preventDefault();
   if (evt.key === Keys.ESCAPE || evt.key === Keys.ESC) {
     errorModalMessage.remove();
   }
 
-  document.removeEventListener('keydown', escapeErrorMessage);
-  document.removeEventListener('click', closeErrorMessage);
+  document.removeEventListener('keydown', escapeErrorMessageHandler);
+  document.removeEventListener('click', closeErrorMessageHandler);
 };
 
 //Закрытие сообщения с ошибкой кликом
-const closeErrorMessage = () => {
+const closeErrorMessageHandler = () => {
   const errorModalMessage = main.querySelector('.error')
   errorModalMessage.remove();
 
-  document.removeEventListener('click', closeErrorMessage);
-  document.removeEventListener('keydown', escapeErrorMessage);
+  document.removeEventListener('click', closeErrorMessageHandler);
+  document.removeEventListener('keydown', escapeErrorMessageHandler);
 };
 
 const onSuccess = () => {
